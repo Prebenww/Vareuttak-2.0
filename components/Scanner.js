@@ -1,4 +1,4 @@
-import {Image, Pressable, StyleSheet, Text, View, TextInput} from 'react-native';
+import {Image, StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 
 
 const Scanner = ({navigation}) => {
@@ -26,43 +26,40 @@ const Scanner = ({navigation}) => {
             </View>
 
 
-            <Pressable
-                style={({pressed}) => [
-                    {
-                        marginTop: '20%',
-                        display: 'flex',
-                        height: '50%',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 8,
-                        elevation: 3,
-                        backgroundColor: '#2770C2',
-                        opacity: pressed ? 0.5 : 1.0
-                    }
-                ]}
-                color="#011B4D">
-                <View style={{margin: 15, display: 'flex', flex: 'column'}}>
-                    <Image
-                        style={{
-                            height: 250,
-                            width: 250,
-                            resizeMode: 'stretch',
-                        }}
-                        source={require('../assets/qr.png')}
-                    />
-                    <Text style={{
-                        fontSize: 20,
-                        lineHeight: 21,
-                        fontWeight: 'bold',
-                        color: 'white',
+            <View style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: "#2770C2",
+                borderRadius: '15%',
+                paddingTop: '0%',
+                height: '35%'
+
+
+            }}>
+
+
+                <Image
+                    source={require('../assets/qr.png')}
+                    resizeMode='contain'
+                    style={{
+                        width: '100%',
+                        height: '80%',
+                        margin: 0,
                     }}
-                    >Scann QR-Kode</Text>
-                </View>
+                />
+                <Text style={{
+                    fontSize: 20,
+                    lineHeight: 21,
+                    fontWeight: 'bold',
+                    letterSpacing: 0.25,
+                    color: 'white',
 
-            </Pressable>
+                }}>Skann QR-kode</Text>
+            </View>
 
 
-            <View>
+            <View style={{marginTop: '15%'}}>
                 <Text style={{fontSize: 20, fontWeight: '500'}}>Antall</Text>
                 <TextInput style={{borderWidth: 1, padding: 10, borderRadius: 8}} placeholder='Antall'/>
             </View>
