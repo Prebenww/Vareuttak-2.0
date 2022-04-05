@@ -6,7 +6,7 @@ const Home = ({navigation}) => {
             <StatusBar barStyle="light-content"/>
 
             <View style={{margin: "15%"}}>
-                <Text style={{fontSize: "20"}}>Fyll ut nødvendig informasjon for å fortsette til uttak av varer</Text>
+                <Text style={{fontSize: 20}}>Fyll ut nødvendig informasjon for å fortsette til uttak av varer</Text>
             </View>
 
             <View style={{marginLeft: "15%", marginRight: "10%"}}>
@@ -16,7 +16,7 @@ const Home = ({navigation}) => {
 
             <View style={{margin: "15%"}}>
                 <Text style={{fontSize: 20, fontWeight: '500'}}>Ansattnavn</Text>
-                <Text style={{fontSize: "20"}}>{}</Text>
+                <Text style={{fontSize: 20}}>{}</Text>
             </View>
 
             <View>

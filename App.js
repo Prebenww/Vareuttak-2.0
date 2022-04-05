@@ -6,6 +6,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Home from "./screens/Home";
 import Scanner from "./components/Scanner";
+import QrScan from "./components/QrScan";
 
 
 const Stack = createNativeStackNavigator();
@@ -26,7 +27,7 @@ export default function App() {
                        headerTintColor: '#fff',
                        headerTitleStyle: {
                            fontWeight: 'bold',
-                           fontSize: '28rem',
+                           fontSize: '28',
 
                        },
                        headerTitleAlign: 'left'
@@ -42,7 +43,7 @@ export default function App() {
                         headerTintColor: '#fff',
                         headerTitleStyle: {
                             fontWeight: 'bold',
-                            fontSize: '28rem',
+                            fontSize: 28,
 
                         },
                         headerTitleAlign: 'left'
@@ -50,6 +51,25 @@ export default function App() {
 
                     name='Scanner'
                     component={Scanner} />
+                <Stack.Screen
+                    options={{
+                        headerShown: false,
+                        title: 'Vareuttak',
+
+                        headerStyle: {
+                            backgroundColor: '#011B4D',
+                        },
+                        headerTintColor: '#fff',
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                            fontSize: 28,
+
+                        },
+                        headerTitleAlign: 'left'
+                    }}
+
+                    name='QrScan'
+                    component={QrScan} />
             </Stack.Navigator>
         </NavigationContainer>
     );
