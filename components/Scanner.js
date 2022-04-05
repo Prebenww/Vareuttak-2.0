@@ -5,7 +5,7 @@ import {BarCodeScanner} from "expo-barcode-scanner";
 import LottieView from "lottie-react-native";
 
 
-const Scanner = ({navigation, type, data}) => {
+const Scanner = ({type, data}) => {
 
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
@@ -15,25 +15,18 @@ const Scanner = ({navigation, type, data}) => {
     const [qrType, setQrType] = useState(null)
 
 
-
-
     useEffect(() => {
         (async () => {
-            const { status } = await BarCodeScanner.requestPermissionsAsync();
+            const {status} = await BarCodeScanner.requestPermissionsAsync();
             setHasPermission(status === 'granted');
         })();
     }, []);
 
-  /*  const formattedData = ({data}) => {
-        return(
-            data.split(/\r?\n/).splice(2,0, "SPLICE", "TEST")
-        )
-    }*/
 
     const handleBarCodeScanned = ({data, type}) => {
         setScanned(true);
         setQrData(data);
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
         setShowQr(false)
     };
 
@@ -46,80 +39,61 @@ const Scanner = ({navigation, type, data}) => {
 
 
     const renderPage = () => {
-
         return (
             <View>
-                <View style={{padding: '15%', display: 'flex', justifyContent: 'center'}}>
-
+                <View style={styles.container}>
                     <View>
-                        <Text style={{fontSize: 20, fontWeight: '500'}}>Leverandør</Text>
-                        <Text style={{fontSize: 15}}>{}</Text>
+                        <Text style={styles.h1}>Leverandør</Text>
+                        <Text style={styles.p}>{}</Text>
                     </View>
 
                     <View>
-                        <Text style={{fontSize: 20, fontWeight: '500'}}>Varelager</Text>
-                        <Text>{qrData}</Text>
+                        <Text style={styles.h1}>Varelager</Text>
+                        <Text style={styles.p}>{qrData}</Text>
                     </View>
 
                     <View>
-                        <Text style={{fontSize: 20, fontWeight: '500'}}>Artikkelnummer</Text>
-                        <Text>{type} {data}</Text>
+                        <Text style={styles.h1}>Artikkelnummer</Text>
+                        <Text style={styles.p}>{type} {data}</Text>
                     </View>
 
                     <View>
-                        <Text style={{fontSize: 20, fontWeight: '500'}}>Beskrivelse</Text>
-                        <Text>{}</Text>
+                        <Text style={styles.h1}>Beskrivelse</Text>
+                        <Text style={styles.p}>{}</Text>
                     </View>
 
                     <TouchableOpacity
                         onPress={() => setShowQr(true)}
-                        style={{
-                            justifyContent: 'center',
-                            backgroundColor: "#2770C2",
-                            borderRadius: '15%',
-                            paddingTop: '0%',
-                            height: '40%',
+                        style={styles.button}>
 
-                        }}>
-                        <View style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: "#2770C2",
-                            borderRadius: '15%',
-                            paddingTop: '0%',
-                            height: '70%',
-
-
-                        }}>
+                        <View style={styles.buttonWrapper}>
 
 
                             <Image
                                 source={require('../assets/qr.png')}
                                 resizeMode='contain'
-                                style={{
-                                    width: '100%',
-                                    height: '80%',
-                                    margin: 0,
-                                }}
+                                style={styles.img}
                             />
 
 
-                            <Text style={{
-                                fontSize: 20,
-                                lineHeight: 21,
-                                fontWeight: 'bold',
-                                letterSpacing: 0.25,
-                                color: 'white',
-
-                            }}>Skann QR-kode</Text>
+                            <Text style={styles.btnText}>
+                                Skann QR-kode
+                            </Text>
 
                         </View>
                     </TouchableOpacity>
 
-                    <View style={{marginTop: '15%'}}>
-                        <Text style={{fontSize: 20, fontWeight: '500'}}>Antall</Text>
-                        <TextInput style={{borderWidth: 1, padding: 10, borderRadius: 8}} placeholder='Antall'/>
+                    <View style={styles.textInputWrapper}>
+
+                        <Text style={styles.h1}>
+                            Antall
+                        </Text>
+
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder='Antall'
+                        />
+
                     </View>
                 </View>
             </View>
@@ -131,15 +105,17 @@ const Scanner = ({navigation, type, data}) => {
     const renderQr = () => {
         return (
             <>
-                    <BarCodeScanner
-                        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-                        style={StyleSheet.absoluteFillObject}
-                    />
+                <BarCodeScanner
+                    onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                    style={StyleSheet.absoluteFillObject}
+                />
 
-                    <LottieView
-                        source={require('../assets/animations/qr-scanner.json')}  autoPlay loop
-                    />
-                </>
+                <LottieView
+                    source={require('../assets/animations/qr-scanner.json')}
+                    autoPlay
+                    loop
+                />
+            </>
 
 
         )
@@ -147,23 +123,63 @@ const Scanner = ({navigation, type, data}) => {
 
     return (
         <>
-          { showQr ? renderQr()  : renderPage()}
+            {showQr ? renderQr() : renderPage()}
         </>
     )
-
 }
 
 
 export default Scanner;
 
+
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        padding: '15%',
+        display: 'flex',
+        justifyContent: 'center'
     },
+    h1: {
+        fontSize: 20,
+        fontWeight: '500'
+    },
+    p: {
+        fontSize: 15
+    },
+    button: {
+        justifyContent: 'center',
+        backgroundColor: "#2770C2",
+        borderRadius: 15,
+        paddingTop: '0%',
+        height: '40%',
+    },
+    buttonWrapper: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: "#2770C2",
+        borderRadius: 15,
+        paddingTop: '0%',
+        height: '70%',
+    },
+    btnText: {
+        fontSize: 20,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
+    },
+    img: {
+        width: '100%',
+        height: '80%',
+        margin: 0,
+    },
+    textInputWrapper: {
+        marginTop: '15%',
+    },
+    textInput: {
+        borderWidth: 1,
+        padding: 10,
+        borderRadius: 8
+    }
 
 });

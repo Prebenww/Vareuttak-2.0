@@ -1,28 +1,38 @@
-import {Image, StyleSheet, Text, View, TextInput, Button, Pressable, SafeAreaView, StatusBar} from 'react-native';
+import {
+    Image,
+    StyleSheet,
+    Text,
+    View,
+    TextInput,
+    Button,
+    Pressable,
+    SafeAreaView,
+    StatusBar
+} from 'react-native';
 
 const Home = ({navigation}) => {
     return (
         <SafeAreaView>
+
             <StatusBar barStyle="light-content"/>
 
-            <View style={{margin: "15%"}}>
-                <Text style={{fontSize: 20}}>Fyll ut nødvendig informasjon for å fortsette til uttak av varer</Text>
+            <View style={styles.margin}>
+                <Text style={styles.p}>Fyll ut nødvendig informasjon for å fortsette til uttak av varer</Text>
             </View>
 
-            <View style={{marginLeft: "15%", marginRight: "10%"}}>
-                <Text style={{fontSize: 20, fontWeight: '500', marginBottom: '2%'}}>Ansattnummer</Text>
-                <TextInput style={{borderWidth: 1, padding: 10, borderRadius: 8}} placeholder='Ansattnummer'/>
+            <View style={styles.textInputWrapper}>
+                <Text style={styles.p2}>Ansattnummer</Text>
+                <TextInput style={styles.textInput} placeholder='Ansattnummer'/>
             </View>
 
-            <View style={{margin: "15%"}}>
-                <Text style={{fontSize: 20, fontWeight: '500'}}>Ansattnavn</Text>
-                <Text style={{fontSize: 20}}>{}</Text>
+            <View style={styles.margin}>
+                <Text style={styles.p3}>Ansattnavn</Text>
+                <Text style={styles.p4}>{}</Text>
             </View>
 
             <View>
                 <Pressable
                     onPress={() => navigation.navigate('Scanner')}
-
                     style={({pressed}) => [
                         {
                             alignItems: 'center',
@@ -33,21 +43,15 @@ const Home = ({navigation}) => {
                             elevation: 3,
                             backgroundColor: '#011B4D',
                             opacity: pressed ? 0.5 : 1.0
-                        }
-                    ]}
+                        }]}
 
                     title='Bekreft ansatt'
                     color="#011B4D">
                     <Text
-                        style={{
-                            fontSize: 20,
-                            lineHeight: 21,
-                            fontWeight: 'bold',
-                            letterSpacing: 0.25,
-                            color: 'white',
-                        }}>
+                        style={styles.btnText}>
                         Bekreft ansatt
                     </Text>
+
                 </Pressable>
             </View>
 
@@ -64,4 +68,39 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    margin: {
+        margin: '15%'
+    },
+    p: {
+        fontSize: 20
+    },
+    p2: {
+        fontSize: 20,
+        fontWeight: '500',
+        marginBottom: '2%'
+    },
+    p3: {
+        fontSize: 20,
+        fontWeight: '500'
+    },
+    p4: {
+        fontSize: 20
+    },
+    textInputWrapper: {
+        marginLeft: "15%",
+        marginRight: "10%"
+    },
+    textInput: {
+        borderWidth: 1,
+        padding: 10,
+        borderRadius: 8
+    },
+    btnText: {
+        fontSize: 20,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
+    },
+
 });
