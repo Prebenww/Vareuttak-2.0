@@ -9,8 +9,24 @@ import {
     SafeAreaView,
     StatusBar
 } from 'react-native';
+import { useState } from 'react';
 
 const Home = ({navigation}) => {
+
+	const [user, setUser] = useState("");
+
+	 const getUser = async (e) => {
+		console.log(e.nativeEvent.text)
+
+		const userObject = await fetch("https://bitter-forest-9549.getsandbox.com/users/" + e.nativeEvent.text)
+
+		console.log(userObject)
+
+		const userJson = await userObject.json()
+
+		setUser(userJson.name)
+	}
+
     return (
         <SafeAreaView>
 
@@ -22,12 +38,12 @@ const Home = ({navigation}) => {
 
             <View style={styles.textInputWrapper}>
                 <Text style={styles.p2}>Ansattnummer</Text>
-                <TextInput style={styles.textInput} placeholder='Ansattnummer'/>
+                <TextInput style={styles.textInput} placeholder='Ansattnummer' onChange={getUser} keyboardType="numeric"/>
             </View>
 
             <View style={styles.margin}>
                 <Text style={styles.p3}>Ansattnavn</Text>
-                <Text style={styles.p4}>{}</Text>
+                <Text style={styles.p4}>{user}</Text>
             </View>
 
             <View>

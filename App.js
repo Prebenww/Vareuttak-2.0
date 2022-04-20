@@ -27,7 +27,7 @@ export default function App() {
                        headerTintColor: '#fff',
                        headerTitleStyle: {
                            fontWeight: 'bold',
-                           fontSize: '28',
+                           fontSize: 28,
 
                        },
                        headerTitleAlign: 'left'
