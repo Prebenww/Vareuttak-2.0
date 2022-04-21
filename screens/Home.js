@@ -16,12 +16,7 @@ const Home = ({navigation}) => {
 	const [user, setUser] = useState("");
 
 	 const getUser = async (e) => {
-		console.log(e.nativeEvent.text)
-
-		const userObject = await fetch("https://bitter-forest-9549.getsandbox.com/users/" + e.nativeEvent.text)
-
-		console.log(userObject)
-
+		const userObject = await fetch("https://vareuttak.getsandbox.com/users/" + e.nativeEvent.text)
 		const userJson = await userObject.json()
 
 		setUser(userJson.name)

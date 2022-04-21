@@ -14,6 +14,9 @@ const Scanner = ({type, data}) => {
     const [qrData, setQrData] = useState(null)
     const [qrType, setQrType] = useState(null)
 
+	 // Egen state for varen
+	 const [vare, setVare] = useState()
+
 
     useEffect(() => {
         (async () => {
@@ -23,11 +26,21 @@ const Scanner = ({type, data}) => {
     }, []);
 
 
+	 const getData = async (id) => {
+		 const rawData = await fetch("https://vareuttak.getsandbox.com/vare/" + id)
+		 const json = await rawData.json()
+
+		 setVare(json)
+	 }
+
+
     const handleBarCodeScanned = ({data, type}) => {
         setScanned(true);
         setQrData(data);
         //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
         setShowQr(false)
+		  // Kan byttes ut med useEffect med listener på qrData
+			getData(data)
     };
 
     if (hasPermission === null) {
@@ -44,22 +57,22 @@ const Scanner = ({type, data}) => {
                 <View style={styles.container}>
                     <View>
                         <Text style={styles.h1}>Leverandør</Text>
-                        <Text style={styles.p}>{}</Text>
+                        <Text style={styles.p}>{vare?.leverandør}</Text>
                     </View>
 
                     <View>
                         <Text style={styles.h1}>Varelager</Text>
-                        <Text style={styles.p}>{qrData}</Text>
+                        <Text style={styles.p}>{vare?.lager}</Text>
                     </View>
 
                     <View>
                         <Text style={styles.h1}>Artikkelnummer</Text>
-                        <Text style={styles.p}>{type} {data}</Text>
+                        <Text style={styles.p}>{vare?.artikkelnummer}</Text>
                     </View>
 
                     <View>
                         <Text style={styles.h1}>Beskrivelse</Text>
-                        <Text style={styles.p}>{}</Text>
+                        <Text style={styles.p}>{vare?.beskrivelse}</Text>
                     </View>
 
                     <TouchableOpacity
@@ -91,7 +104,7 @@ const Scanner = ({type, data}) => {
 
                         <TextInput
                             style={styles.textInput}
-                            placeholder='Antall'
+                            placeholder={"Antall " + vare?.enhet}
                         />
 
                     </View>
