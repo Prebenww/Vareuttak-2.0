@@ -33,7 +33,7 @@ const Home = ({navigation}) => {
 
             <View style={styles.textInputWrapper}>
                 <Text style={styles.p2}>Ansattnummer</Text>
-                <TextInput style={styles.textInput} placeholder='Ansattnummer' onChange={getUser} keyboardType="numeric"/>
+                <TextInput style={styles.textInput} placeholder='Ansattnummer' onChange={getUser} keyboardType='default'/>
             </View>
 
             <View style={styles.margin}>
