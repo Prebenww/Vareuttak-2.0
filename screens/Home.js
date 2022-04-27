@@ -11,15 +11,42 @@ import {
 } from 'react-native';
 import {useState} from 'react';
 
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs, doc, getDoc} from "firebase/firestore"; 
+
 const Home = ({navigation}) => {
 
     const [user, setUser] = useState("");
+	 const firebaseConfig = {
+		apiKey: "AIzaSyAAiv3nt_fT87lDS1GZW3kMtvqke_HNHBE",
+		authDomain: "e-shop-e904d.firebaseapp.com",
+		projectId: "e-shop-e904d",
+		storageBucket: "e-shop-e904d.appspot.com",
+		messagingSenderId: "305498398537",
+		appId: "1:305498398537:web:25838fe8d5b7dd421dc498",
+		measurementId: "G-F1YWHMHVV4"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  console.log(db)
 
     const getUser = async (e) => {
         const userObject = await fetch("https://vareuttak.getsandbox.com/users/" + e.nativeEvent.text)
         const userJson = await userObject.json()
 
         setUser(userJson.name)
+
+		  const docRef = doc(db, "users", e.nativeEvent.text)
+		  const docSnap = await getDoc(docRef)
+
+		  if (docSnap.exists()) {
+			  console.log(docSnap.data())
+			  setUser(docSnap.data().name)
+		  } else {
+			  console.error("Finner ikke bruker")
+		  }
+
     }
 
     return (
