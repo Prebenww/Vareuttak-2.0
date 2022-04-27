@@ -9,18 +9,18 @@ import {
     SafeAreaView,
     StatusBar
 } from 'react-native';
-import { useState } from 'react';
+import {useState} from 'react';
 
 const Home = ({navigation}) => {
 
-	const [user, setUser] = useState("");
+    const [user, setUser] = useState("");
 
-	 const getUser = async (e) => {
-		const userObject = await fetch("https://vareuttak.getsandbox.com/users/" + e.nativeEvent.text)
-		const userJson = await userObject.json()
+    const getUser = async (e) => {
+        const userObject = await fetch("https://vareuttak.getsandbox.com/users/" + e.nativeEvent.text)
+        const userJson = await userObject.json()
 
-		setUser(userJson.name)
-	}
+        setUser(userJson.name)
+    }
 
     return (
         <SafeAreaView>
@@ -33,7 +33,8 @@ const Home = ({navigation}) => {
 
             <View style={styles.textInputWrapper}>
                 <Text style={styles.p2}>Ansattnummer</Text>
-                <TextInput style={styles.textInput} placeholder='Ansattnummer' onChange={getUser} keyboardType='default'/>
+                <TextInput style={styles.textInput} placeholder='Ansattnummer' onChange={getUser}
+                           keyboardType='default'/>
             </View>
 
             <View style={styles.margin}>
@@ -65,7 +66,6 @@ const Home = ({navigation}) => {
 
                 </Pressable>
             </View>
-
         </SafeAreaView>
     )
 }
