@@ -4,6 +4,8 @@ import React, {useState, useEffect} from 'react';
 import {BarCodeScanner} from "expo-barcode-scanner";
 import LottieView from "lottie-react-native";
 
+import { app } from '../firebase/firebase';
+import { getFirestore, doc, getDoc} from "firebase/firestore";
 
 const Scanner = ({type, data}) => {
 
@@ -13,6 +15,8 @@ const Scanner = ({type, data}) => {
 
     const [qrData, setQrData] = useState(null)
     const [qrType, setQrType] = useState(null)
+
+	 const db = getFirestore(db)
 
 	 // Egen state for varen
 	 const [vare, setVare] = useState()
@@ -27,10 +31,16 @@ const Scanner = ({type, data}) => {
 
 
 	 const getData = async (id) => {
-		 const rawData = await fetch("https://vareuttak.getsandbox.com/vare/" + id)
-		 const json = await rawData.json()
+		const docRef = doc(db, "vare", id)
+		const docSnap = await getDoc(docRef)
 
-		 setVare(json)
+		if (docSnap.exists()) {
+			setVare(docSnap.data())
+		} else {
+			console.error(`Finner ikke vare med ID: ${id}`)
+			setVare()
+		}
+				 
 	 }
 
 
