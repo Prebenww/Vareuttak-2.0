@@ -11,15 +11,28 @@ import {
 } from 'react-native';
 import {useState} from 'react';
 
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs, doc, getDoc} from "firebase/firestore";
+import { app } from '../firebase/firebase';
+
 const Home = ({navigation}) => {
 
-    const [user, setUser] = useState("");
+	const [user, setUser] = useState("");
 
-    const getUser = async (e) => {
-        const userObject = await fetch("https://vareuttak.getsandbox.com/users/" + e.nativeEvent.text)
-        const userJson = await userObject.json()
+	const db = getFirestore(app);
 
-        setUser(userJson.name)
+	const getUser = async (e) => {
+		const docRef = doc(db, "users", e.nativeEvent.text)
+		const docSnap = await getDoc(docRef)
+
+		if (docSnap.exists()) {
+			setUser(docSnap.data()?.name)
+		} else {
+			// Logge til et ordentlig sted?
+			console.error("Finner ikke bruker")
+			setUser("")
+		}
+
     }
 
     return (
