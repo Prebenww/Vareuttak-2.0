@@ -1,10 +1,8 @@
 import {
-    Image,
     StyleSheet,
     Text,
     View,
     TextInput,
-    Button,
     Pressable,
     SafeAreaView,
     StatusBar
@@ -32,7 +30,6 @@ const Home = ({navigation}) => {
 			console.error("Finner ikke bruker")
 			setUser("")
 		}
-
     }
 
     return (
@@ -128,3 +125,4 @@ const styles = StyleSheet.create({
     },
 
 });
+
