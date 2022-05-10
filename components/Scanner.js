@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View, TextInput, TouchableOpacity, Button, Switch} from 'react-native';
+import {Image, StyleSheet, Text, View, TextInput, TouchableOpacity, Button, Switch, Pressable} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {MaterialIcons} from '@expo/vector-icons';
 
@@ -7,8 +7,8 @@ import LottieView from "lottie-react-native";
 
 import {Picker} from '@react-native-picker/picker';
 
-import { FontAwesome } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {FontAwesome} from '@expo/vector-icons';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 
 import {app} from '../firebase/firebase';
@@ -21,8 +21,30 @@ const Scanner = ({type, data}) => {
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
     //State for å vise manuelle valg.
-    const [showPicker, setShowPicker] = useState(true);
-    const togglePicker = () => setShowPicker(previousState => !previousState);
+
+    //Leverandør
+    const [showLeverandor, setShowLeverandor] = useState(false);
+    const toggleLeverandor = () => {
+        showLeverandor ? setShowLeverandor(false) : setShowLeverandor(true);
+    }
+
+    //Varelager
+    const [showVarelager, setShowVarelager] = useState(false);
+    const toggleVarelager = () => {
+        showVarelager ? setShowVarelager(false) : setShowVarelager(true);
+    }
+
+    //Artikkelnummer
+    const [showArtikkelnummer, setShowArtikkelnummer] = useState(false);
+    const toggleArtikkelnummer = () => {
+        showArtikkelnummer ? setShowArtikkelnummer(false) : setShowArtikkelnummer(true);
+    }
+
+    const [selectedLeverandor, setSelectedLeverandor] = useState();
+    const [selectedVarelager, setSelectedVarelager] = useState();
+    const [selectedArtikkelnummer, setSelectedArtikkelnummer] = useState();
+    const [selectedBeskrivelse, setSelectedBeskrivelse] = useState();
+
 
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
@@ -31,8 +53,6 @@ const Scanner = ({type, data}) => {
     const [qrData, setQrData] = useState(null)
     const [qrType, setQrType] = useState(null)
     const [id, setId] = useState("")
-
-    const [selectedLanguage, setSelectedLanguage] = useState();
 
 
     const db = getFirestore(db)
@@ -102,6 +122,8 @@ const Scanner = ({type, data}) => {
                     <Text style={{fontWeight: 'bold', fontSize: 16, paddingBottom: 4}}>Manuelt uttak</Text>
                     <View style={{display: 'flex', flexDirection: 'row',}}>
                         <Switch
+
+                            trackColor={{false: '#767577', true: '#2770C2'}}
 
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={toggleSwitch}
@@ -183,17 +205,22 @@ const Scanner = ({type, data}) => {
                     <View>
 
                         <View style={styles.container}>
-                            <View>
+                            <View style={styles.itemContainer}>
 
-                                <View onClick={togglePicker} style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}} >
+                                <TouchableOpacity onPress={toggleLeverandor}
+                                                  style={{display: 'flex', flexDirection: 'row',}}>
                                     <Text style={styles.h1}>Leverandør</Text>
-                                    <MaterialCommunityIcons  style={{paddingLeft: 5}} name="arrow-down-bold-box" size={24} color="#2770C2" />
-                                </View>
+                                    <View style={styles.dropdown}>
+                                        <MaterialCommunityIcons style={{paddingLeft: 5}} name="arrow-down-bold-box"
+                                                                size={24} color="#2770C2"/>
+                                    </View>
 
-                                {showPicker &&  <Picker selectedValue={selectedLanguage}
-                                                        onValueChange={(itemValue, itemIndex) =>
-                                                            setSelectedLanguage(itemValue)
-                                                        }>
+                                </TouchableOpacity>
+
+                                {showLeverandor && <Picker selectedValue={selectedLeverandor}
+                                                       onValueChange={(itemValue, itemIndex) =>
+                                                           setSelectedLeverandor(itemValue)
+                                                       }>
                                     <Picker.Item label="item 1" value="item 1"/>
                                     <Picker.Item label="item 2" value="item 2"/>
                                     <Picker.Item label="item 3" value="item 3"/>
@@ -203,24 +230,74 @@ const Scanner = ({type, data}) => {
 
                             </View>
 
-                            <View>
-                                <Text style={styles.h1}>Varelager</Text>
+                            <View style={styles.itemContainer}>
+
+                                <TouchableOpacity onPress={toggleVarelager}
+                                                  style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text style={styles.h1}>Varelager</Text>
+                                    <View style={styles.dropdown}>
+
+                                        <MaterialCommunityIcons style={{paddingLeft: 5}} name="arrow-down-bold-box"
+                                                                size={24} color="#2770C2"/>
+                                    </View>
+
+                                </TouchableOpacity>
+
+
+                                {showVarelager && <Picker selectedValue={selectedVarelager}
+                                                          onValueChange={(itemValue, itemIndex) =>
+                                                              setSelectedVarelager(itemValue)
+                                                          }>
+                                    <Picker.Item label="item 1" value="item 1"/>
+                                    <Picker.Item label="item 2" value="item 2"/>
+                                    <Picker.Item label="item 3" value="item 3"/>
+                                    <Picker.Item label="item 4" value="item 4"/>
+                                    <Picker.Item label="item 5" value="item 5"/>
+                                </Picker>}
 
                             </View>
 
-                            <View>
-                                <Text style={styles.h1}>Artikkelnummer</Text>
-                                <Text style={styles.p}>{vare?.artikkelnummer}</Text>
+                            <View style={styles.itemContainer}>
+
+                                <TouchableOpacity onPress={toggleArtikkelnummer}
+                                                  style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                                    <Text style={styles.h1}>Artikkelnummer</Text>
+                                    <View style={styles.dropdown}>
+
+                                        <MaterialCommunityIcons style={{paddingLeft: 5}} name="arrow-down-bold-box"
+                                                                size={24} color="#2770C2"/>
+                                    </View>
+
+                                </TouchableOpacity>
+
+                                {showArtikkelnummer && <Picker selectedValue={selectedArtikkelnummer}
+                                                               onValueChange={(itemValue, itemIndex) =>
+                                                                   setSelectedArtikkelnummer(itemValue)
+                                                               }>
+                                    <Picker.Item label="item 1" value="item 1"/>
+                                    <Picker.Item label="item 2" value="item 2"/>
+                                    <Picker.Item label="item 3" value="item 3"/>
+                                    <Picker.Item label="item 4" value="item 4"/>
+                                    <Picker.Item label="item 5" value="item 5"/>
+                                </Picker>}
+
                             </View>
 
-                            <View>
-                                <Text style={styles.h1}>Beskrivelse</Text>
-                                <Text style={styles.p}>{vare?.beskrivelse}</Text>
+                            <View style={styles.itemContainer}>
+
+                                <TouchableOpacity
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                    }}>
+                                    <Text style={styles.h1}>Beskrivelse:</Text>
+                                </TouchableOpacity>
                             </View>
 
                             <TouchableOpacity
                                 onPress={() => setShowQr(true)}
-                                style={{height: 80}}>
+                                style={{height: 80, marginTop: '20%'}}>
 
                                 <View style={styles.buttonWrapper}>
 
@@ -294,6 +371,11 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center'
     },
+    itemContainer: {
+        paddingBottom: '10%',
+
+
+    },
     textView: {
         display: 'flex',
         flexDirection: 'row',
@@ -302,7 +384,18 @@ const styles = StyleSheet.create({
     },
     h1: {
         fontSize: 20,
-        fontWeight: '500'
+        fontWeight: '500',
+        display: 'flex',
+        width: '55%',
+
+
+    },
+    dropdown: {
+        display: "flex",
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+
+
     },
     p: {
         fontSize: 15
@@ -347,7 +440,8 @@ const styles = StyleSheet.create({
     switch: {
         display: 'flex',
         alignItems: 'flex-end',
-        padding: 20
+        paddingRight: 20,
+        paddingTop: 20
     }
 
 });
