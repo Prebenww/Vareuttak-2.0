@@ -16,6 +16,7 @@
     "@expo/vector-icons": "^13.0.0",
     "@react-native-firebase/app": "^14.9.0",
     "@react-native-firebase/firestore": "^14.9.0",
+    "@react-native-picker/picker": "^2.4.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.1",
     "@testing-library/react-native": "^9.2.0",

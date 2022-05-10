@@ -5,6 +5,12 @@ import {MaterialIcons} from '@expo/vector-icons';
 import {BarCodeScanner} from "expo-barcode-scanner";
 import LottieView from "lottie-react-native";
 
+import {Picker} from '@react-native-picker/picker';
+
+import { FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+
 import {app} from '../firebase/firebase';
 import {getFirestore, doc, getDoc, updateDoc} from "firebase/firestore";
 
@@ -14,6 +20,10 @@ const Scanner = ({type, data}) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
+    //State for å vise manuelle valg.
+    const [showPicker, setShowPicker] = useState(true);
+    const togglePicker = () => setShowPicker(previousState => !previousState);
+
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [showQr, setShowQr] = useState(false);
@@ -21,6 +31,9 @@ const Scanner = ({type, data}) => {
     const [qrData, setQrData] = useState(null)
     const [qrType, setQrType] = useState(null)
     const [id, setId] = useState("")
+
+    const [selectedLanguage, setSelectedLanguage] = useState();
+
 
     const db = getFirestore(db)
 
@@ -89,6 +102,7 @@ const Scanner = ({type, data}) => {
                     <Text style={{fontWeight: 'bold', fontSize: 16, paddingBottom: 4}}>Manuelt uttak</Text>
                     <View style={{display: 'flex', flexDirection: 'row',}}>
                         <Switch
+
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={toggleSwitch}
                             value={isEnabled}
@@ -98,66 +112,146 @@ const Scanner = ({type, data}) => {
                         }</Text>
                     </View>
                 </View>
-                <View style={styles.container}>
-                    <View>
-                        <Text style={styles.h1}>Leverandør</Text>
-                        <Text style={styles.p}>{vare?.leverandør}</Text>
-                    </View>
-
-                    <View>
-                        <Text style={styles.h1}>Varelager</Text>
-                        <Text style={styles.p}>{vare?.lager}</Text>
-                    </View>
-
-                    <View>
-                        <Text style={styles.h1}>Artikkelnummer</Text>
-                        <Text style={styles.p}>{vare?.artikkelnummer}</Text>
-                    </View>
-
-                    <View>
-                        <Text style={styles.h1}>Beskrivelse</Text>
-                        <Text style={styles.p}>{vare?.beskrivelse}</Text>
-                    </View>
-
-                    <TouchableOpacity
-                        onPress={() => setShowQr(true)}
-                        style={styles.button}>
-
-                        <View style={styles.buttonWrapper}>
 
 
-                            <Image
-                                source={require('../assets/qr.png')}
-                                resizeMode='contain'
-                                style={styles.img}
-                            />
+                {!isEnabled && <View>
+
+                    <View style={styles.container}>
+                        <View>
+                            <Text style={styles.h1}>Leverandør</Text>
+                            <Text style={styles.p}>{vare?.leverandør}</Text>
+                        </View>
+
+                        <View>
+                            <Text style={styles.h1}>Varelager</Text>
+                            <Text style={styles.p}>{vare?.lager}</Text>
+                        </View>
+
+                        <View>
+                            <Text style={styles.h1}>Artikkelnummer</Text>
+                            <Text style={styles.p}>{vare?.artikkelnummer}</Text>
+                        </View>
+
+                        <View>
+                            <Text style={styles.h1}>Beskrivelse</Text>
+                            <Text style={styles.p}>{vare?.beskrivelse}</Text>
+                        </View>
+
+                        <TouchableOpacity
+                            onPress={() => setShowQr(true)}
+                            style={styles.button}>
+
+                            <View style={styles.buttonWrapper}>
 
 
-                            <Text style={styles.btnText}>
-                                Skann QR-kode
+                                <Image
+                                    source={require('../assets/qr.png')}
+                                    resizeMode='contain'
+                                    style={styles.img}
+                                />
+
+
+                                <Text style={styles.btnText}>
+                                    Skann QR-kode
+                                </Text>
+
+                            </View>
+                        </TouchableOpacity>
+
+                        <View style={styles.textInputWrapper}>
+
+                            <Text style={styles.h1}>
+                                Antall
                             </Text>
 
+                            <View style={styles.textView}>
+                                <TextInput
+                                    style={styles.textInput}
+                                    placeholder={"Antall " + vare?.enhet}
+                                    onSubmitEditing={withdrawItems}
+                                />
+                                <MaterialIcons onPress={() => {
+                                }} name="navigate-next" size={35} color="black"/>
+                            </View>
+
                         </View>
-                    </TouchableOpacity>
-
-                    <View style={styles.textInputWrapper}>
-
-                        <Text style={styles.h1}>
-                            Antall
-                        </Text>
-
-                        <View style={styles.textView}>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder={"Antall " + vare?.enhet}
-                                onSubmitEditing={withdrawItems}
-                            />
-                            <MaterialIcons onPress={() => {
-                            }} name="navigate-next" size={35} color="black"/>
-                        </View>
-
                     </View>
-                </View>
+                </View>}
+
+
+                {isEnabled &&
+                    <View>
+
+                        <View style={styles.container}>
+                            <View>
+
+                                <View onClick={togglePicker} style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}} >
+                                    <Text style={styles.h1}>Leverandør</Text>
+                                    <MaterialCommunityIcons  style={{paddingLeft: 5}} name="arrow-down-bold-box" size={24} color="#2770C2" />
+                                </View>
+
+                                {showPicker &&  <Picker selectedValue={selectedLanguage}
+                                                        onValueChange={(itemValue, itemIndex) =>
+                                                            setSelectedLanguage(itemValue)
+                                                        }>
+                                    <Picker.Item label="item 1" value="item 1"/>
+                                    <Picker.Item label="item 2" value="item 2"/>
+                                    <Picker.Item label="item 3" value="item 3"/>
+                                    <Picker.Item label="item 4" value="item 4"/>
+                                    <Picker.Item label="item 5" value="item 5"/>
+                                </Picker>}
+
+                            </View>
+
+                            <View>
+                                <Text style={styles.h1}>Varelager</Text>
+
+                            </View>
+
+                            <View>
+                                <Text style={styles.h1}>Artikkelnummer</Text>
+                                <Text style={styles.p}>{vare?.artikkelnummer}</Text>
+                            </View>
+
+                            <View>
+                                <Text style={styles.h1}>Beskrivelse</Text>
+                                <Text style={styles.p}>{vare?.beskrivelse}</Text>
+                            </View>
+
+                            <TouchableOpacity
+                                onPress={() => setShowQr(true)}
+                                style={{height: 80}}>
+
+                                <View style={styles.buttonWrapper}>
+
+                                    <Text style={styles.btnText}>
+                                        Hent beskrivelse
+                                    </Text>
+
+                                </View>
+                            </TouchableOpacity>
+
+                            <View style={styles.textInputWrapper}>
+
+                                <Text style={styles.h1}>
+                                    Antall
+                                </Text>
+
+                                <View style={styles.textView}>
+                                    <TextInput
+                                        style={styles.textInput}
+                                        placeholder={"Antall " + vare?.enhet}
+                                        onSubmitEditing={withdrawItems}
+                                    />
+                                    <MaterialIcons onPress={() => {
+                                    }} name="navigate-next" size={35} color="black"/>
+                                </View>
+
+                            </View>
+                        </View>
+                    </View>
+                }
+
             </View>
         )
     }
